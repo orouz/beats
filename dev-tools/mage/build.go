@@ -174,6 +174,8 @@ func Build(params BuildArgs) error {
 	}
 	cgoEnv := os.Getenv("CGO_ENABLED")
 	fmt.Println("cgoEnv1", cgoEnv)
+	fmt.Println("params c", params)
+	fmt.Println("params", params.CGO)
 	var cgoEnabled string
 	if cgoEnv != "" {
 		cgoEnabled = cgoEnv
