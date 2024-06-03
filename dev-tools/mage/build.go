@@ -172,21 +172,18 @@ func Build(params BuildArgs) error {
 	if env == nil {
 		env = map[string]string{}
 	}
-	cgoEnv := os.Getenv("CGO_ENABLED")
-	fmt.Println("cgoEnv1", cgoEnv)
-	fmt.Println("params c", params)
-	fmt.Println("params", params.CGO)
-	var cgoEnabled string
-	if cgoEnv != "" {
-		cgoEnabled = cgoEnv
-	} else {
-		cgoEnabled = "0"
-	}
+	cgoEnabled := "0"
 	if params.CGO {
 		cgoEnabled = "1"
 	}
+	cgoEnv := os.Getenv("CGO_ENABLED")
+	if cgoEnv != "" {
+		cgoEnabled = cgoEnv
+	}
 	env["CGO_ENABLED"] = cgoEnabled
-	fmt.Println("cgoEnv2", cgoEnabled)
+	fmt.Println("cgoEnv", env["CGO_ENABLED"])
+	fmt.Printf("params: %+v\n", params)
+
 	// Spec
 	args := []string{
 		"build",
