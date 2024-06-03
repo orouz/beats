@@ -284,6 +284,7 @@ func (b GolangCrossBuilder) Build() error {
 		return fmt.Errorf("failed to determine mage-linux-"+builderArch+" relative path: %w", err)
 	}
 
+	fmt.Println("crossbuild env cgo", os.Getenv("CGO_ENABLED"))
 	dockerRun := sh.RunCmd("docker", "run")
 	image, err := b.ImageSelector(b.Platform)
 	if err != nil {
@@ -331,6 +332,7 @@ func (b GolangCrossBuilder) Build() error {
 		"--env", "MAGEFILE_VERBOSE="+verbose,
 		"--env", "MAGEFILE_TIMEOUT="+EnvOr("MAGEFILE_TIMEOUT", ""),
 		"--env", fmt.Sprintf("SNAPSHOT=%v", Snapshot),
+		"--env", os.Getenv("CGO_ENABLED"),
 		"-v", repoInfo.RootDir+":"+mountPoint,
 		"-w", workDir,
 	)

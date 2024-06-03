@@ -151,6 +151,7 @@ func GolangCrossBuild(params BuildArgs) error {
 		return err
 	}
 
+	// params.CGO = false
 	return Build(params)
 }
 
@@ -171,12 +172,19 @@ func Build(params BuildArgs) error {
 	if env == nil {
 		env = map[string]string{}
 	}
-	cgoEnabled := "0"
+	cgoEnv := os.Getenv("CGO_ENABLED")
+	fmt.Println("cgoEnv1", cgoEnv)
+	var cgoEnabled string
+	if cgoEnv != "" {
+		cgoEnabled = cgoEnv
+	} else {
+		cgoEnabled = "0"
+	}
 	if params.CGO {
 		cgoEnabled = "1"
 	}
 	env["CGO_ENABLED"] = cgoEnabled
-
+	fmt.Println("cgoEnv2", cgoEnabled)
 	// Spec
 	args := []string{
 		"build",
