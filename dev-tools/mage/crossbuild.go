@@ -119,6 +119,11 @@ func AddPlatforms(expressions ...string) func(params *crossBuildParams) {
 		}
 	}
 }
+func WithPlatforms(platforms BuildPlatformList) func(params *crossBuildParams) {
+	return func(params *crossBuildParams) {
+		params.Platforms = platforms
+	}
+}
 
 type crossBuildParams struct {
 	Platforms     BuildPlatformList
@@ -331,7 +336,6 @@ func (b GolangCrossBuilder) Build() error {
 		"--env", "MAGEFILE_VERBOSE="+verbose,
 		"--env", "MAGEFILE_TIMEOUT="+EnvOr("MAGEFILE_TIMEOUT", ""),
 		"--env", fmt.Sprintf("SNAPSHOT=%v", Snapshot),
-		"--env", "CGO_ENABLED=0",
 		"-v", repoInfo.RootDir+":"+mountPoint,
 		"-w", workDir,
 	)
